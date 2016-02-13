@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<meta charset="UTF-8">
+<title>Une loupe en SVG responsive \ Bambous ~ exemples / Equatorium</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Gaëtan Langhade, interfacteur">
+
+<link rel="stylesheet" href="loupe-svg-responsive/regularize.css">
+<style>
+body	{
+	height: 100%;
+	line-height: 100vh;
+	text-align: center;
+}
+h1	{
+	font-size: 1.25em;
+	line-height: 1;
+	text-align: center;
+	position: absolute;
+	width: 100%;
+}
+body:not(.msie) svg	{
+	max-height: 100%;
+}
+svg	{
+	max-width: 100%;
+	vertical-align: middle;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Une loupe en SVG responsive, adaptée de pilatinfo.org</h1>
+
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	viewBox="0 0 960 540">
+<!-- adapté de http://pilatinfo.org/english/memory/loupe.htm -->
+	<defs>
+		<clipPath id="loupe">
+		    <circle cx="100" cy="100" r="100" />
+		</clipPath>
+	</defs>
+
+	<image x="0" y="0" width="960" height="540" xlink:href="loupe-svg-responsive/Miniature-Melbourne6.jpg" id="ref" />
+
+	<g id="zoom" clip-path="url(#loupe)" clip-rule="evenodd" transform="translate(-100,-100)">
+		<image x="0" y="0" id="rond" width="1920" height="1080" xlink:href="loupe-svg-responsive/Miniature-Melbourne6.jpg" />
+		<circle cx="100" cy="100" r="100" style="stroke-width:4;stroke:white;fill:none;"/>
+	</g>
+
+</svg>
+
+<script src="loupe-svg-responsive/jquery-1.11.2.min.js"></script>
+<script>
+$(function () {
+	"use strict";
+	var svgLargeurAbs = 960,
+		rayonLoupe = 100,
+		rond = document.getElementById("rond"),
+		zoom = document.getElementById("zoom"),
+		svgRef = document.getElementById("ref"),
+		nav = navigator.userAgent.toLowerCase(),
+		re = /trident.*rv[ :]*11\./,
+		boosterMouse = 1,
+		boosterTactile = 1.25,
+		booster, svgCoord, svgRatio, msie;
+
+	function toMeasure () {
+		"use strict";
+		svgCoord = svgRef.getBoundingClientRect();
+		svgRatio = svgLargeurAbs / svgCoord.width;
+	}
+
+	function toMove (pX, pY) {
+		"use strict";
+		var x = (pX - svgCoord.left) * svgRatio - rayonLoupe,
+			y = (pY - svgCoord.top) * svgRatio - rayonLoupe;
+		zoom.setAttribute("transform", "translate(" + x + "," + y + ")");
+		rond.setAttribute("x", - 2 * x - rayonLoupe);
+		rond.setAttribute("y", - 2 * y - rayonLoupe * booster);
+	}
+
+	$(window).on({
+		resize: toMeasure
+	})
+	.trigger("resize");
+
+	$("svg").on({
+		mousemove: function (ze) {
+			"use strict";
+			ze.preventDefault();
+			booster = boosterMouse;
+			toMove(ze.pageX, ze.pageY);
+	}	});
+	// ! "onmousemove" in window
+	("ontouchmove" in window || "onmsgesturechange" in window)
+	&& document.getElementsByTagName("svg")[0].addEventListener("touchmove",
+		//http://stackoverflow.com/questions/16110124/can-you-get-svg-on-mobile-browser-accept-mouse-touch-events-i-cant
+		function(ze) {
+			"use strict";
+			ze.preventDefault();
+
+			var ore = ze,
+				tactTouch = typeof ze.pageX == "number" && (ze.pageX > 0 || ze.pageY > 0) ? ze
+				: typeof ze.touches[0].pageX == "number" && (ze.touches[0].pageX > 0 || ze.touches[0].pageY > 0) ? ze.touches[0]
+				: typeof ze.changedTouches[0].pageX == "number" && (ze.changedTouches[0].pageX > 0 || ze.changedTouches[0].pageY > 0) ? ze.changedTouches[0] : null;
+
+			if (tactTouch === null)
+				return;
+
+			booster = boosterTactile;
+
+			toMove(tactTouch.pageX, tactTouch.pageY - rayonLoupe / booster);
+		}, false);
+
+	msie = 0 /*@cc_on + parseInt(nav.split("msie")[1], 10) @*/;
+	(nav.indexOf("trident") > 0)
+	&& (msie === 0)
+	&& (msie = !! nav.match(re) ? 11 : 0);
+	(1 / (msie - 1) > 1 / 11)
+	&& $b.addClass("msie");
+});
+</script>
+
+</body>
+</html>
