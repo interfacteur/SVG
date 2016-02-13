@@ -1,0 +1,35 @@
+/* cf. jeu-milieux-svg.css (http://www.langhade.net/ludwik/jeux/jeu-milieux1.html)
+	février-mars 2015
+
+A retester	*/
+
+
+svg	{
+	-webkit-filter: invert(100%) sepia(100%);
+	filter: invert(100%) sepia(100%);
+}
+.msie svg	{
+	filter: none;
+}
+
+
+
+svg g	{
+	fill: #445;
+	filter: url(filtres.svg#shadow);
+}
+@media screen and (-webkit-min-device-pixel-ratio:0)	{
+	svg g	{
+		-webkit-filter: url(#shadow);
+		filter: url(#shadow);
+	}
+}
+
+
+
+
+
+.cache	{
+	left: -4444px;
+	position: absolute;
+}
