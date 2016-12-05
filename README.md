@@ -2,7 +2,7 @@ SVG
 ========
 
 
-Voir aussi SVG sur datatropic.net http://www.datatropic.net/dv/=svg : atelier de data visualisation front-end
+Voir aussi SVG sur datatropic.net - http://www.datatropic.net/dv/=svg : atelier de data visualisation front-end
 
 
 * filtres-compat : appliquer un filtre SVG via des CSS sur Firefox et sur Chrome, début 2015, à retester
