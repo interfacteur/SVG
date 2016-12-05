@@ -1,8 +1,8 @@
 SVG
 ========
 
-Le SVG en visualisation de données et en interface web
 
+Voir aussi SVG sur datatropic.net, atelier de data visualisation front-end :
 http://www.datatropic.net/dv/=svg/
 
 * filtres-compat : appliquer un filtre SVG via des CSS SVG sur Firefox et sur Chrome, début 2015, à retester
